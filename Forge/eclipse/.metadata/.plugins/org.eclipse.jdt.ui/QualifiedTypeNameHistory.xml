@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="net.minecraft.enchantment.EnumEnchantmentType"/>
+<fullyQualifiedTypeName name="net.minecraft.enchantment.Enchantment"/>
+<fullyQualifiedTypeName name="net.minecraft.inventory.Container"/>
+<fullyQualifiedTypeName name="java.awt.List"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.lang.ArrayStoreException"/>
+<fullyQualifiedTypeName name="net.minecraft.init.Blocks"/>
+<fullyQualifiedTypeName name="net.minecraft.item.Item"/>
+<fullyQualifiedTypeName name="scala.actors.threadpool.Arrays"/>
+<fullyQualifiedTypeName name="com.russn.pc.container.ContainerInfusion"/>
+<fullyQualifiedTypeName name="net.minecraft.init.Items"/>
+<fullyQualifiedTypeName name="net.minecraft.inventory.Slot"/>
+<fullyQualifiedTypeName name="ibxm.Player"/>
+<fullyQualifiedTypeName name="net.minecraft.network.Packet"/>
+<fullyQualifiedTypeName name="net.minecraft.network.INetHandler"/>
+<fullyQualifiedTypeName name="net.minecraft.network.play.client.C17PacketCustomPayload"/>
+<fullyQualifiedTypeName name="java.nio.ByteBuffer"/>
+<fullyQualifiedTypeName name="com.russn.pc.tileentity.TileEntityInfusion"/>
+<fullyQualifiedTypeName name="com.russn.pc.common.PotatoCraft"/>
+<fullyQualifiedTypeName name="com.russn.pc.common.ModRegistry"/>
+</qualifiedTypeNameHistroy>

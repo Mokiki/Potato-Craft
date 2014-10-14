@@ -1,0 +1,14 @@
+package com.russn.pc.item;
+
+import net.minecraft.item.ItemPickaxe;
+
+import com.russn.pc.common.ModRegistry;
+
+public class PotatoPickaxe extends ItemPickaxe {
+
+	public PotatoPickaxe(ToolMaterial tool) {
+		super(tool);
+		this.setHarvestLevel("pickaxe", 2);
+		this.setCreativeTab(ModRegistry.TabTools);
+	}
+}

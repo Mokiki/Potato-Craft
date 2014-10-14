@@ -1,0 +1,17 @@
+package com.russn.pc.block;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+
+import com.russn.pc.common.PotatoCraft;
+
+public class ReinforcedConcrete extends Block {
+
+	public ReinforcedConcrete(Material mat) {
+		super(mat);
+		this.setCreativeTab(PotatoCraft.tabMisc);
+		this.setHardness(20);
+		this.setHarvestLevel("pickaxe", 3);
+		this.setResistance(25F);
+	}
+}

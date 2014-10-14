@@ -1,0 +1,24 @@
+package com.russn.pc.item;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
+import com.russn.pc.common.PotatoCraft;
+
+public class EnderPickaxe extends ItemPickaxe {
+	public EnderPickaxe(ToolMaterial tool) {
+		super(tool);
+		this.setHarvestLevel("pickaxe", 2);
+		this.setCreativeTab(PotatoCraft.tabTools);
+	}
+
+	@Override
+	public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_, Block p_150894_3_, int x, int y, int z, EntityLivingBase p_150894_7_) {
+		System.out.println(x+" "+y+" "+z);
+
+		return true;
+	}
+}

@@ -1,0 +1,13 @@
+package com.russn.pc.item;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemSpade;
+
+public class AdamantineShovel extends ItemSpade {
+
+	public AdamantineShovel(ToolMaterial tool) {
+		super(tool);
+		this.setCreativeTab(CreativeTabs.tabTools);
+	}
+}
+

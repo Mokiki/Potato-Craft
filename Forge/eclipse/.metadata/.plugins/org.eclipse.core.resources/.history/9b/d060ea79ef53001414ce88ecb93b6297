@@ -1,0 +1,15 @@
+package com;
+
+import java.util.Random;
+
+public class Start {
+	public static void main(String[] args) {
+        Random r=new Random();
+        
+        for(;;) {
+        	r.setSeed(System.nanoTime());
+        	
+        	System.out.println(r.nextInt(2));
+        }
+	}
+}

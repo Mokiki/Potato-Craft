@@ -1,0 +1,37 @@
+package com.russn.pc.common;
+
+import com.russn.pc.util.InfusionManager;
+
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+
+@Mod(modid="PotatoCraft", name="PotatoCraft", version="Alpha 1.6")
+public class PotatoCraft {
+	@Instance
+	public static PotatoCraft instance = new PotatoCraft();
+	
+	@SidedProxy(clientSide="com.russn.pc.client.ClientProxy", serverSide="com.russn.pc.client.common.CommonProxy")
+	public static CommonProxy proxy;
+	
+	public static InfusionManager infusion=new InfusionManager();
+
+	@EventHandler
+	public void init(FMLInitializationEvent event) {
+		ModRegistry.initItems();
+		ModRegistry.registerItems();
+		
+		ModRegistry.initBlocks();
+		ModRegistry.registerBlocks();
+		
+		ModRegistry.registerTileEntities();
+		ModRegistry.registerHandlers();
+		
+		ModRegistry.registerCrafting();
+		ModRegistry.registerSmelting();
+		
+		ModRegistry.registerWorldgen();
+	}
+}

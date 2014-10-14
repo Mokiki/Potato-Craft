@@ -1,0 +1,29 @@
+package com.russn.pc.util;
+
+import com.russn.pc.common.PotatoCraft;
+import com.russn.pc.item.AdamantineAxe;
+
+import net.minecraft.item.Item;
+
+public class Cooldownx {
+	private boolean cooldownInactive=true;
+	public Cooldownx(final int timer) {
+		final boolean done=false;
+	    Runnable r = new Runnable() {
+	        public void run() {
+	        	try{
+	        		cooldownInactive=false;
+	                Thread.sleep(timer); 
+                    cooldownInactive=true;
+	        	} catch(InterruptedException e) {
+	        		System.out.println(e);
+	        	}
+	        }
+	    };
+	    new Thread(r).start();
+    }
+	
+	public boolean isCool() {
+		return cooldownInactive;
+	}
+}

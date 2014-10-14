@@ -1,0 +1,14 @@
+package com.russn.pc.block;
+
+import net.minecraft.block.BlockFlower;
+
+import com.russn.pc.common.PotatoCraft;
+
+public class Firetear extends BlockFlower {
+
+	public Firetear(int i) {
+		super(i);
+		this.setCreativeTab(PotatoCraft.tabMisc);
+	}
+
+}

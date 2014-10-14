@@ -1,0 +1,12 @@
+package com.russn.pc.item;
+
+import net.minecraft.item.Item;
+
+import com.russn.pc.common.PotatoCraft;
+
+public class InversionPotato extends Item{
+	public InversionPotato() {
+		this.setCreativeTab(PotatoCraft.tabPotato);
+	}
+}
+

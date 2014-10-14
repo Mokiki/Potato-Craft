@@ -1,0 +1,13 @@
+package com.russn.pc.item;
+
+import net.minecraft.item.ItemHoe;
+
+import com.russn.pc.common.ModRegistry;
+
+public class AdamantineHoe extends ItemHoe {
+
+	public AdamantineHoe(ToolMaterial tool) {
+		super(tool);
+		this.setCreativeTab(ModRegistry.TabTools);
+	}
+}

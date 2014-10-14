@@ -1,0 +1,12 @@
+package com.russn.pc.item;
+
+import net.minecraft.item.Item;
+
+import com.russn.pc.common.PotatoCraft;
+import com.russn.pc.common.PotatoCraft;
+
+public class AdamiteIngot extends Item {
+	public AdamiteIngot() {
+		this.setCreativeTab(PotatoCraft.TabMat);
+	}
+}

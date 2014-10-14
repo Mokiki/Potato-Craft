@@ -1,0 +1,59 @@
+package com.russn.pc.util;
+
+import scala.actors.threadpool.Arrays;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
+import com.russn.pc.common.PotatoCraft;
+
+public class InfusionManager {
+	public Item[][] registeredRecipes={
+			{
+				Items.iron_ingot, Items.iron_ingot, Items.iron_ingot, Items.iron_ingot,
+				Items.iron_ingot, Items.iron_ingot, Items.iron_ingot, Items.iron_ingot,
+				Items.iron_ingot, Items.iron_ingot, Items.iron_ingot, Items.iron_ingot,
+				Items.iron_ingot, Items.iron_ingot, Items.iron_ingot, Items.iron_ingot,
+				
+				Items.iron_ingot
+			}
+	};
+	
+	public ItemStack[][] recipeResults={
+			{
+				null, new ItemStack(PotatoCraft.HardenedPotato), null
+			}
+	};
+	
+    public InfusionManager() {
+    	
+    }
+    
+    
+    
+    public ItemStack[] verifyRecipe(IInventory inventory) {
+    	Item[] inven=new Item[17];
+    	
+    	for(int i=0;i<17;i++) { //gets the contents of the infusion table
+    	    ItemStack invenItem=inventory.getStackInSlot(i);
+    	    
+    	    if(invenItem == null) { //null check -- if invenItem is null and we do .getItem(), the game crashes
+    	    	inven[i]=null;
+    	    	continue;
+    	    }
+    	    
+    	    inven[i]=invenItem.getItem();
+    	}
+    	
+    	for(int j=0;j<registeredRecipes.length;j++) {
+    		if(Arrays.equals(registeredRecipes[0], inven)) { //test the inventory contents against each recipe
+    			System.out.println("Match Found");
+    			
+    			return recipeResults[j]; //if match is found, return the recipe result
+    		}
+    	}
+    	
+        return null;
+    }
+}

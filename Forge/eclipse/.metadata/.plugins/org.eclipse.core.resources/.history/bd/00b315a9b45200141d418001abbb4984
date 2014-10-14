@@ -1,0 +1,11 @@
+package com.russn.pc.item;
+
+import net.minecraft.item.Item;
+
+import com.russn.pc.common.PotatoCraft;
+
+public class RockyPotato extends Item{
+	public RockyPotato() {
+		this.setCreativeTab(PotatoCraft.tabPotato);
+	}
+}

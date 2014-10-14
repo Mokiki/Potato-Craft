@@ -1,0 +1,15 @@
+package com.russn.pc.common;
+
+import net.minecraft.network.INetHandler;
+import net.minecraft.network.play.client.C17PacketCustomPayload;
+import cpw.mods.fml.common.functions.
+
+public class PacketHandler implements IPacketHandler {
+
+    @Override
+    public void onPacketData(INetworkManager manager,
+                    Packet250CustomPayload packet, Player playerEntity) {
+            // TODO Auto-generated method stub
+    }
+
+}

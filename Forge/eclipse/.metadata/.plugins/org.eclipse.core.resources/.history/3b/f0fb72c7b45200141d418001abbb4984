@@ -1,0 +1,13 @@
+package com.russn.pc.item;
+
+import net.minecraft.item.Item;
+
+import com.russn.pc.common.ModRegistry;
+import com.russn.pc.common.PotatoCraft;
+
+public class InfernalCoal extends Item {
+	public InfernalCoal() {
+		this.setCreativeTab(ModRegistry.TabMatO);
+		this.setMaxDamage(0);
+	}
+}

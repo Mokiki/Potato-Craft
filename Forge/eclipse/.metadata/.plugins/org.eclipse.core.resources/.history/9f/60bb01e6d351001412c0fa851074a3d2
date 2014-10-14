@@ -1,0 +1,21 @@
+package com.russn.pc.common;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler.Sharable;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+
+@Sharable
+public class PacketHandler extends SimpleChannelInboundHandler<FMLProxyPacket> {
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, FMLProxyPacket packet) throws Exception {
+        if (packet.channel().equals("NetworkExample")) {
+            ByteBuf payload = packet.payload();
+            if (payload.readableBytes() == 4) {
+                int number = payload.readInt();
+                System.out.println("number = " + number);
+            }
+        }
+    }
+}

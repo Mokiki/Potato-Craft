@@ -1,0 +1,27 @@
+package com;
+
+import java.util.Random;
+
+public class Start {
+	public static void main(String[] args) {
+        Random r=new Random();
+    	r.setSeed(System.nanoTime());
+    	int j;
+    	
+    	int count0=0;
+    	int count1=0;
+    	
+        for(int i=0;i<100;i++) {
+            j=r.nextInt(2);
+        	
+        	System.out.print(j);
+        	
+        	if(j==0) count0++;
+        	else count1++;
+        }
+        
+        System.out.println();
+        System.out.println("___________________________________________________________________");
+        System.out.println("0's:"+count0+", 1's:"+count1);
+	}
+}

@@ -1,0 +1,51 @@
+package com.russn.pc.util;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+
+import com.russn.pc.common.PotatoCraft;
+
+public class InfusionManager {
+	public ItemStack[][] registeredRecipes={
+			{
+				new ItemStack(Items.iron_ingot), null, new ItemStack(Blocks.stone), null,
+				new ItemStack(Items.iron_ingot), null, new ItemStack(Blocks.stone), null,
+				new ItemStack(Items.iron_ingot), null, new ItemStack(Blocks.stone), null,
+				new ItemStack(Items.iron_ingot), null, new ItemStack(Blocks.stone), null,
+
+				new ItemStack(Items.potato)
+			}
+	};
+	
+	public ItemStack[][] recipeResults={
+			{
+				null, new ItemStack(PotatoCraft.HardenedPotato), null
+			}
+	};
+	
+    public InfusionManager() {
+    	
+    }
+    
+    public ItemStack[] verifyRecipe(IInventory inventory) {
+    	ItemStack[] inven=new ItemStack[16];
+    	
+    	for(int i=0;i<16;i++) { //gets the contents of the infusion table
+    	    ItemStack invenItem=inventory.getStackInSlot(i);
+    	    inven[i]=invenItem;
+    	    System.out.println(i);
+    	}
+    	
+    	for(int j=0;j<registeredRecipes.length;j++) {
+    		if(registeredRecipes[j] == inven) { //test the inventory contents against each recipe
+    			System.out.println("Match Found");
+    			
+    			return recipeResults[j];
+    		}
+    	}
+    	
+        return null;
+    }
+}

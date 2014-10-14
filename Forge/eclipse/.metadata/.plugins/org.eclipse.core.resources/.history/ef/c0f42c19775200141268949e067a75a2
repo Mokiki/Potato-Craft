@@ -1,0 +1,23 @@
+package com.russn.pc.common;
+
+public class Registry {
+    public static void initItems() {
+    	System.out.println("Item initializaton started...");
+    	
+    	System.out.println("Item initializaton ended.");
+    }
+    
+    public static void initBlocks() {
+    	System.out.println("Block initializaton started...");
+    	
+    	System.out.println("Block initializaton ended.");
+    }
+    
+    public static void initHandlers() {
+    	
+    }
+    
+    public static void initWorldgen() {
+    	
+    }
+}

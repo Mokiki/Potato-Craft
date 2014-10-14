@@ -1,0 +1,36 @@
+package com.russn.pc.item;
+
+import java.awt.List;
+
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
+public class ActiveAdamantinePickaxe extends ItemPickaxe {
+
+	public ActiveAdamantinePickaxe(ToolMaterial tool) {
+		super(tool);
+		this.setHarvestLevel("pickaxe", 4);
+	}
+
+	@Override
+	public ItemStack onItemRightClick(ItemStack item, World world,
+			EntityPlayer player) {
+
+		item.addEnchantment(Enchantment.fortune, 10);
+
+		return item;
+	}
+
+	@Override
+	public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
+		System.out.println("XXX");
+	}
+
+	public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
+		p_77624_3_.add("Active");
+	}
+
+}

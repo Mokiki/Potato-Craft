@@ -1,0 +1,246 @@
+package com.russn.pc.common;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
+import net.minecraftforge.common.util.EnumHelper;
+
+import com.russn.pc.block.AdamantinePotatoBlock;
+import com.russn.pc.block.AdamiteOre;
+import com.russn.pc.block.InfernalCoalBlock;
+import com.russn.pc.block.InfernalCoalOre;
+import com.russn.pc.block.InfusionTable;
+import com.russn.pc.block.NetherDiamondOre;
+import com.russn.pc.block.NetherEmeraldOre;
+import com.russn.pc.block.NetherGoldOre;
+import com.russn.pc.block.NetherIronOre;
+import com.russn.pc.block.NetherLapisOre;
+import com.russn.pc.block.NetherRedstoneOre;
+import com.russn.pc.block.PotatoBlock;
+import com.russn.pc.block.PotatoBricks;
+import com.russn.pc.item.AdamantineAxe;
+import com.russn.pc.item.AdamantineHoe;
+import com.russn.pc.item.AdamantinePickaxe;
+import com.russn.pc.item.AdamantineShovel;
+import com.russn.pc.item.AdamantineSword;
+import com.russn.pc.item.AdamiteChunk;
+import com.russn.pc.item.AdamiteIngot;
+import com.russn.pc.item.AdamiteShard;
+import com.russn.pc.item.HardenedPotato;
+import com.russn.pc.item.InfernalCoal;
+import com.russn.pc.item.PotatoPickaxe;
+import com.russn.pc.item.UnstableAdamiteChunk;
+import com.russn.pc.item.WoodenMultitool;
+import com.russn.pc.tab.tabMat;
+import com.russn.pc.tab.tabOres;
+import com.russn.pc.tab.tabPotato;
+import com.russn.pc.tab.tabPotatoBlocks;
+import com.russn.pc.tab.tabTools;
+import com.russn.pc.tab.tabWeapons;
+import com.russn.pc.worldgen.AdamiteOreGen;
+import com.russn.pc.worldgen.CoalLumpGen;
+import com.russn.pc.worldgen.InfernalCoalGen;
+import com.russn.pc.worldgen.NetherDiamondOreGen;
+import com.russn.pc.worldgen.NetherEmeraldOreGen;
+import com.russn.pc.worldgen.NetherGoldOreGen;
+import com.russn.pc.worldgen.NetherIronOreGen;
+import com.russn.pc.worldgen.NetherLapisOreGen;
+import com.russn.pc.worldgen.NetherRedstoneOreGen;
+
+public class Registry {
+	//creative tabs
+	public static CreativeTabs TabPotato = new tabPotato("potatos");
+	public static CreativeTabs TabPotatoBlock=new tabPotatoBlocks("potatoBlocks");
+	public static CreativeTabs TabMat=new tabMat("potatoMat");
+	public static CreativeTabs TabOres=new tabOres("potatoOres");
+	public static CreativeTabs TabWeapons=new tabWeapons("potatoWeapons");
+	public static CreativeTabs TabTools=new tabTools("potatoTools");
+
+	//tool materials
+	public static ToolMaterial toolAdamantine=EnumHelper.addToolMaterial("Adamantine", 4, 20000, 40, 17, 30);
+	public static ToolMaterial toolPotato=EnumHelper.addToolMaterial("Potato", 2, 250, 5, 5, 10);
+	public static ToolMaterial toolEnder=EnumHelper.addToolMaterial("Ender", 2, 50, 5, 3, 10);
+
+	//adamantine tools
+	public static Item AdamantineSword=new AdamantineSword(PotatoCraft.toolAdamantine)
+	.setUnlocalizedName("AdamantineSword").setTextureName("PotatoCraft:adamantine_sword");
+
+	public static Item AdamantinePickaxe=new AdamantinePickaxe(PotatoCraft.toolAdamantine)
+	.setUnlocalizedName("AdamantinePickaxe").setTextureName("PotatoCraft:adamantine_pickaxe");
+
+	public static Item AdamantineAxe=new AdamantineAxe(PotatoCraft.toolAdamantine)
+	.setUnlocalizedName("AdamantineAxe").setTextureName("PotatoCraft:adamantine_axe");
+
+	public static Item AdamantineShovel=new AdamantineShovel(PotatoCraft.toolAdamantine)
+	.setUnlocalizedName("AdamantineShovel").setTextureName("PotatoCraft:adamantine_shovel");
+
+	public static Item AdamantineHoe=new AdamantineHoe(PotatoCraft.toolAdamantine)
+	.setUnlocalizedName("AdamantineHoe").setTextureName("PotatoCraft:adamantine_hoe");
+
+	//potato tools
+	public static Item PotatoPickaxe=new PotatoPickaxe(PotatoCraft.toolPotato)
+	.setUnlocalizedName("PotatoPickaxe").setTextureName("PotatoCraft:potato_pickaxe");
+
+	//multitools
+	public static Item WoodenMultitool=new WoodenMultitool(ToolMaterial.WOOD)
+	.setUnlocalizedName("WoodenMultitool").setTextureName("PotatoCraft:wooden_spork");
+
+	public static Item StoneMultitool=new WoodenMultitool(ToolMaterial.STONE)
+	.setUnlocalizedName("StoneMultitool").setTextureName("PotatoCraft:stone_spork");
+
+	public static Item IronMultitool=new WoodenMultitool(ToolMaterial.IRON)
+	.setUnlocalizedName("IronMultitool").setTextureName("PotatoCraft:iron_spork");
+
+	public static Item GoldMultitool=new WoodenMultitool(ToolMaterial.GOLD)
+	.setUnlocalizedName("GoldenMultitool").setTextureName("PotatoCraft:gold_spork");
+
+	public static Item DiamondMultitool=new WoodenMultitool(ToolMaterial.EMERALD)
+	.setUnlocalizedName("DiamondMultitool").setTextureName("PotatoCraft:diamond_spork");
+
+	public static Item AdamantineMultitool=new WoodenMultitool(PotatoCraft.toolAdamantine)
+	.setUnlocalizedName("AdamantineMultitool").setTextureName("PotatoCraft:wooden_spork");
+
+	public static Item PotatoMultitool=new WoodenMultitool(PotatoCraft.toolPotato)
+	.setUnlocalizedName("PotatoMultitool").setTextureName("PotatoCraft:wooden_spork");
+
+	//blocks
+	public static Block PotatoBlock=new PotatoBlock(Material.rock)
+	.setBlockName("PotatoBlock").setBlockTextureName("PotatoCraft:potato_block");
+
+	public static Block PotatoBricks=new PotatoBricks(Material.rock)
+	.setBlockName("PotatoBricks").setBlockTextureName("PotatoCraft:potato_bricks");
+
+	public static Block AdamantineBlock=new AdamantinePotatoBlock(Material.rock)
+	.setBlockName("AdamantineBlock").setBlockTextureName("PotatoCraft:adamantine_block");
+
+	public static Block InfernalCoalBlock=new InfernalCoalBlock(Material.rock)
+	.setBlockName("InfernalCoalBlock").setBlockTextureName("PotatoCraft:infernal_coal_block");
+
+	public static Block InfusionTable=new InfusionTable(Material.iron)
+	.setBlockName("InfusionTable").setBlockTextureName("PotatoCraft:infusion_table");
+
+	//ores
+	public static Block AdamiteOre=new AdamiteOre(Material.rock)
+	.setBlockName("AdamiteOre").setBlockTextureName("PotatoCraft:adamite_ore");
+
+	public static Block InfernalCoalOre=new InfernalCoalOre(Material.rock)
+	.setBlockName("InfernalCoalOre").setBlockTextureName("PotatoCraft:infernal_coal");
+
+	public static Block NetherDiamondOre=new NetherDiamondOre(Material.rock)
+	.setBlockName("NetherDiamondOre").setBlockTextureName("PotatoCraft:nether_diamond_ore");
+
+	public static Block NetherGoldOre=new NetherGoldOre(Material.rock)
+	.setBlockName("NetherGoldOre").setBlockTextureName("PotatoCraft:nether_gold_ore");
+
+	public static Block NetherEmeraldOre=new NetherEmeraldOre(Material.rock)
+	.setBlockName("NetherEmeraldOre").setBlockTextureName("PotatoCraft:nether_emerald_ore");
+
+	public static Block NetherIronOre=new NetherIronOre(Material.rock)
+	.setBlockName("NetherIronOre").setBlockTextureName("PotatoCraft:nether_iron_ore");
+
+	public static Block NetherLapisOre=new NetherLapisOre(Material.rock)
+	.setBlockName("NetherLapisOre").setBlockTextureName("PotatoCraft:nether_lapis_ore");
+
+	public static Block NetherRedstoneOre=new NetherRedstoneOre(Material.rock)
+	.setBlockName("NetherRedstoneOre").setBlockTextureName("PotatoCraft:nether_redstone_ore");
+
+	//potatos
+	public static Item HardenedPotato=new HardenedPotato()
+	.setUnlocalizedName("HardenedPotato").setTextureName("PotatoCraft:hardened_potato");
+
+	public static Item AdamiteShard=new AdamiteShard()
+	.setUnlocalizedName("AdamiteShard").setTextureName("PotatoCraft:adamite_shard");
+
+	public static Item AdamiteChunk=new AdamiteChunk().setUnlocalizedName("AdamiteChunk").setTextureName("PotatoCraft:adamite_chunk");
+
+	public static Item InfernalCoal;
+	public static Item UnstableAdamiteChunk;
+	public static Item AdamiteIngot;
+
+	//worldgen
+	public static AdamiteOreGen GenAdamiteOre;
+	public static InfernalCoalGen GenInfernalCoal;
+	public static CoalLumpGen GenCoalLump;
+
+	public static NetherDiamondOreGen GenNetherDiamondOre;
+	public static NetherEmeraldOreGen GenNetherEmeraldOre;
+	public static NetherIronOreGen GenNetherIronOre;
+	public static NetherGoldOreGen GenNetherGoldOre;
+	public static NetherLapisOreGen GenNetherLapisOre;
+	public static NetherRedstoneOreGen GenNetherRedstonOre;
+	
+	/*
+	 * Initialize all items
+	 */
+    public static void initItems() {
+    	System.out.println("Item initializaton started...");
+    	InfernalCoal=new InfernalCoal().setUnlocalizedName("InfernalCoal").setTextureName("PotatoCraft:infernal_coal");
+    	UnstableAdamiteChunk=new UnstableAdamiteChunk().setUnlocalizedName("unstable_adamite_chunk").setTextureName("PotatoCraft:unstable_adamite_chunk");
+    	AdamiteIngot=new AdamiteIngot().setUnlocalizedName("adamite_ingot").setTextureName("PotatoCraft:adamite_ingot");
+    	System.out.println("Item initializaton ended.");
+    }
+    
+    /*
+     * Initialize all blocks
+     */
+    public static void initBlocks() {
+    	System.out.println("Block initializaton started...");
+    	
+    	System.out.println("Block initializaton ended.");
+    }
+    
+    /*
+     * Initialize all world generation related things
+     */
+    public static void initWorldgen() {
+    	System.out.println("Worldgen initializaton started...");
+    	GenNetherDiamondOre=new NetherDiamondOreGen();
+    	GenNetherEmeraldOre=new NetherEmeraldOreGen();
+    	GenNetherIronOre=new NetherIronOreGen();
+    	GenNetherGoldOre=new NetherGoldOreGen();
+    	GenNetherLapisOre=new NetherLapisOreGen();
+    	GenNetherRedstonOre=new NetherRedstoneOreGen();
+    	
+    	GenAdamiteOre=new AdamiteOreGen();
+    	GenInfernalCoal=new InfernalCoalGen();
+    	GenCoalLump=new CoalLumpGen();
+       	System.out.println("Worldgen initializaton ended.");
+    }
+    
+	/*
+	 * Register all items
+	 */
+    public static void registerItems() {
+    	System.out.println("Item initializaton started...");
+    	
+    	System.out.println("Item initializaton ended.");
+    }
+    
+    /*
+     * Register all blocks
+     */
+    public static void registerBlocks() {
+    	System.out.println("Block initializaton started...");
+    	
+    	System.out.println("Block initializaton ended.");
+    }
+    
+    /*
+     * Register all world generation related things
+     */
+    public static void registerWorldgen() {
+    	System.out.println("Worldgen registration started...");
+
+       	System.out.println("Worldgen registration ended.");
+    }
+    /*
+     * Register gui, fuel, and packet handlers 
+     */
+    public static void registerHandlers() {
+    	System.out.println("Handler registration started...");
+    	
+    	System.out.println("Handler registration ended.");
+    }
+}

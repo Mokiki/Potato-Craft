@@ -1,0 +1,38 @@
+package com.russn.pc.util;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+
+import com.russn.pc.common.PotatoCraft;
+
+public class InfusionManager {
+	public ItemStack[][] registeredRecipes={
+			{
+				new ItemStack(Items.iron_ingot), null, new ItemStack(Blocks.stone), null,
+				new ItemStack(Items.iron_ingot), null, new ItemStack(Blocks.stone), null,
+				new ItemStack(Items.iron_ingot), null, new ItemStack(Blocks.stone), null,
+				new ItemStack(Items.iron_ingot), null, new ItemStack(Blocks.stone), null,
+				
+				new ItemStack(Items.potato), null, new ItemStack(PotatoCraft.HardenedPotato), 
+				null
+			}
+	};
+	
+    public InfusionManager() {
+    	
+    }
+    
+    public ItemStack[] verifyRecipe(IInventory inventory) {
+    	int sucessCount=0;
+    	ItemStack[] results=new ItemStack[16];
+    	
+    	for(int i=0;i<16;i++) {
+    	    ItemStack invenItem=inventory.getStackInSlot(i);
+    	    results[i]=invenItem;
+    	}
+    	
+        return results;
+    }
+}

@@ -1,0 +1,548 @@
+package com.russn.pc.common;
+
+import io.netty.buffer.ByteBuf;
+
+import java.nio.ByteBuffer;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.C17PacketCustomPayload;
+import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.event.entity.living.LivingEvent;
+
+import com.russn.pc.block.AdamantinePotatoBlock;
+import com.russn.pc.block.AdamiteOre;
+import com.russn.pc.block.Concrete;
+import com.russn.pc.block.CorruptedPotatoBlock;
+import com.russn.pc.block.FieryPotatoBlock;
+import com.russn.pc.block.InfernalCoalBlock;
+import com.russn.pc.block.InfernalCoalOre;
+import com.russn.pc.block.InfernalCrystal;
+import com.russn.pc.block.InfusionTable;
+import com.russn.pc.block.NetherDiamondOre;
+import com.russn.pc.block.NetherEmeraldOre;
+import com.russn.pc.block.NetherGoldOre;
+import com.russn.pc.block.NetherIronOre;
+import com.russn.pc.block.NetherLapisOre;
+import com.russn.pc.block.NetherRedstoneOre;
+import com.russn.pc.block.PotatoBlock;
+import com.russn.pc.block.PotatoBricks;
+import com.russn.pc.block.ReinforcedConcrete;
+import com.russn.pc.item.ActiveAdamantinePickaxe;
+import com.russn.pc.item.AdamantineAxe;
+import com.russn.pc.item.AdamantineHoe;
+import com.russn.pc.item.AdamantinePickaxe;
+import com.russn.pc.item.AdamantinePotato;
+import com.russn.pc.item.AdamantineShovel;
+import com.russn.pc.item.AdamantineSword;
+import com.russn.pc.item.AdamiteChunk;
+import com.russn.pc.item.AdamiteIngot;
+import com.russn.pc.item.AdamiteShard;
+import com.russn.pc.item.AnvilRainSpell;
+import com.russn.pc.item.CarbonRod;
+import com.russn.pc.item.CorruptedPotato;
+import com.russn.pc.item.DeathPotato;
+import com.russn.pc.item.EnderPickaxe;
+import com.russn.pc.item.GolemCpu;
+import com.russn.pc.item.HardenedPotato;
+import com.russn.pc.item.InfernalCoal;
+import com.russn.pc.item.InversionPotato;
+import com.russn.pc.item.LifePotato;
+import com.russn.pc.item.LightningSpell;
+import com.russn.pc.item.PotatoPickaxe;
+import com.russn.pc.item.RockyPotato;
+import com.russn.pc.item.UnstableAdamiteChunk;
+import com.russn.pc.item.WoodenMultitool;
+import com.russn.pc.tab.tabElectrics;
+import com.russn.pc.tab.tabMat;
+import com.russn.pc.tab.tabOres;
+import com.russn.pc.tab.tabPotato;
+import com.russn.pc.tab.tabPotatoBlocks;
+import com.russn.pc.tab.tabSpells;
+import com.russn.pc.tab.tabTools;
+import com.russn.pc.tab.tabWeapons;
+import com.russn.pc.tileentity.TileEntityInfusion;
+import com.russn.pc.util.InfusionManager;
+import com.russn.pc.worldgen.AdamiteOreGen;
+import com.russn.pc.worldgen.CoalLumpGen;
+import com.russn.pc.worldgen.InfernalCoalGen;
+import com.russn.pc.worldgen.NetherDiamondOreGen;
+import com.russn.pc.worldgen.NetherEmeraldOreGen;
+import com.russn.pc.worldgen.NetherGoldOreGen;
+import com.russn.pc.worldgen.NetherIronOreGen;
+import com.russn.pc.worldgen.NetherLapisOreGen;
+import com.russn.pc.worldgen.NetherRedstoneOreGen;
+
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+
+@Mod(modid="PotatoCraft", name="PotatoCraft", version="Alpha 1.5")
+public class PotatoCraft {
+	@SidedProxy(clientSide="com.russn.pc.client.ClientProxy", serverSide="com.russn.pc.client.common.CommonProxy")
+	public static CommonProxy proxy;
+	public static InfusionManager infusion=new InfusionManager();
+
+	@Instance
+	public static PotatoCraft instance = new PotatoCraft();
+
+	//creative tabs
+	public static CreativeTabs tabPotato = new tabPotato("potatos");
+	public static CreativeTabs tabPotatoBlock=new tabPotatoBlocks("potatoBlocks");
+	public static CreativeTabs tabMisc=new tabMat("potatoMat");
+	public static CreativeTabs tabOres=new tabOres("potatoOres");
+	public static CreativeTabs tabWeapons=new tabWeapons("potatoWeapons");
+	public static CreativeTabs tabTools=new tabTools("potatoTools");
+	public static CreativeTabs tabSpells=new tabSpells("potatoSpells");
+	public static CreativeTabs tabElectrics=new tabElectrics("potatoElectrics");
+
+	//tool materials
+	public static ToolMaterial toolAdamantine=EnumHelper
+			.addToolMaterial("Adamantine", 4, 20000, 40, 17, 30);
+
+	public static ToolMaterial toolPotato=EnumHelper
+			.addToolMaterial("Potato", 2, 250, 5, 5, 10);
+
+	public static ToolMaterial toolEnder=EnumHelper
+			.addToolMaterial("Ender", 2, 50, 5, 3, 10);
+
+	public static ToolMaterial toolActiveAdamantine=EnumHelper
+			.addToolMaterial("ActiveAdamantine", 4, 20000, 100, 17, 30);
+
+	//adamantine tools
+	public static Item AdamantineSword=new AdamantineSword(PotatoCraft.toolAdamantine)
+	.setUnlocalizedName("AdamantineSword").setTextureName("PotatoCraft:adamantine_sword");
+
+	public static Item AdamantinePickaxe=new AdamantinePickaxe(PotatoCraft.toolAdamantine)
+	.setUnlocalizedName("AdamantinePickaxe").setTextureName("PotatoCraft:adamantine_pickaxe");
+
+	public static Item AdamantineAxe=new AdamantineAxe(PotatoCraft.toolAdamantine)
+	.setUnlocalizedName("AdamantineAxe").setTextureName("PotatoCraft:adamantine_axe");
+
+	public static Item AdamantineShovel=new AdamantineShovel(PotatoCraft.toolAdamantine)
+	.setUnlocalizedName("AdamantineShovel").setTextureName("PotatoCraft:adamantine_shovel");
+
+	public static Item AdamantineHoe=new AdamantineHoe(PotatoCraft.toolAdamantine)
+	.setUnlocalizedName("AdamantineHoe").setTextureName("PotatoCraft:adamantine_hoe");
+
+	//ender tools
+	public static Item EnderPickaxe=new EnderPickaxe(PotatoCraft.toolEnder)
+	.setUnlocalizedName("EnderPickaxe").setTextureName("PotatoCraft:ender_pickaxe");
+
+	//potato tools
+	public static Item PotatoPickaxe=new PotatoPickaxe(PotatoCraft.toolPotato)
+	.setUnlocalizedName("PotatoPickaxe").setTextureName("PotatoCraft:potato_pickaxe");
+
+	//activated adamantine tools
+	public static Item ActiveAdamantinePickaxe=new ActiveAdamantinePickaxe(PotatoCraft.toolActiveAdamantine)
+	.setUnlocalizedName("ActiveAdamantinePickaxe").setTextureName("PotatoCraft:active_adamantine_pickaxe");
+
+	//multitools
+	public static Item WoodenMultitool=new WoodenMultitool(ToolMaterial.WOOD)
+	.setUnlocalizedName("WoodenMultitool").setTextureName("PotatoCraft:wooden_spork");
+
+	public static Item StoneMultitool=new WoodenMultitool(ToolMaterial.STONE)
+	.setUnlocalizedName("StoneMultitool").setTextureName("PotatoCraft:stone_spork");
+
+	public static Item IronMultitool=new WoodenMultitool(ToolMaterial.IRON)
+	.setUnlocalizedName("IronMultitool").setTextureName("PotatoCraft:iron_spork");
+
+	public static Item GoldMultitool=new WoodenMultitool(ToolMaterial.GOLD)
+	.setUnlocalizedName("GoldenMultitool").setTextureName("PotatoCraft:gold_spork");
+
+	public static Item DiamondMultitool=new WoodenMultitool(ToolMaterial.EMERALD)
+	.setUnlocalizedName("DiamondMultitool").setTextureName("PotatoCraft:diamond_spork");
+
+	public static Item AdamantineMultitool=new WoodenMultitool(PotatoCraft.toolAdamantine)
+	.setUnlocalizedName("AdamantineMultitool").setTextureName("PotatoCraft:wooden_spork");
+
+	public static Item PotatoMultitool=new WoodenMultitool(PotatoCraft.toolPotato)
+	.setUnlocalizedName("PotatoMultitool").setTextureName("PotatoCraft:wooden_spork");
+
+	//blocks
+	public static Block PotatoBlock=new PotatoBlock(Material.rock)
+	.setBlockName("PotatoBlock").setBlockTextureName("PotatoCraft:potato_block");
+
+	public static Block CorruptedPotatoBlock=new CorruptedPotatoBlock(Material.rock)
+	.setBlockName("CorruptedPotatoBlock").setBlockTextureName("PotatoCraft:corrupted_potato_block");
+
+	public static Block PotatoBricks=new PotatoBricks(Material.rock)
+	.setBlockName("PotatoBricks").setBlockTextureName("PotatoCraft:potato_bricks");
+
+	public static Block AdamantinePotatoBlock=new AdamantinePotatoBlock(Material.rock)
+	.setBlockName("AdamantinePotatoBlock").setBlockTextureName("PotatoCraft:adamantine_potato_block");
+
+	public static Block FieryPotatoBlock=new FieryPotatoBlock(Material.rock)
+	.setBlockName("FieryPotatoBlock").setBlockTextureName("PotatoCraft:fiery_potato_block");
+
+	public static Block InfernalCoalBlock=new InfernalCoalBlock(Material.rock)
+	.setBlockName("InfernalCoalBlock").setBlockTextureName("PotatoCraft:infernal_coal_block");
+
+	public static Block Concrete=new Concrete(Material.rock)
+	.setBlockName("Concrete").setBlockTextureName("PotatoCraft:concrete");
+
+	public static Block ReinforcedConcrete=new ReinforcedConcrete(Material.rock)
+	.setBlockName("ReinforcedConcrete").setBlockTextureName("PotatoCraft:reinforced_concrete");
+
+	public static Block InfernalCrystal=new InfernalCrystal(Material.glass)
+	.setBlockName("InfernalCrystal").setBlockTextureName("PotatoCraft:infernal_crystal");
+
+	public static Block InfusionTable=new InfusionTable(Material.iron)
+	.setBlockName("InfusionTable").setBlockTextureName("PotatoCraft:infusion_table");
+
+	//ores
+	public static Block AdamiteOre=new AdamiteOre(Material.rock)
+	.setBlockName("AdamiteOre").setBlockTextureName("PotatoCraft:adamite_ore");
+
+	public static Block InfernalCoalOre=new InfernalCoalOre(Material.rock)
+	.setBlockName("InfernalCoalOre").setBlockTextureName("PotatoCraft:infernal_coal");
+
+	public static Block NetherDiamondOre=new NetherDiamondOre(Material.rock)
+	.setBlockName("NetherDiamondOre").setBlockTextureName("PotatoCraft:nether_diamond_ore");
+
+	public static Block NetherGoldOre=new NetherGoldOre(Material.rock)
+	.setBlockName("NetherGoldOre").setBlockTextureName("PotatoCraft:nether_gold_ore");
+
+	public static Block NetherEmeraldOre=new NetherEmeraldOre(Material.rock)
+	.setBlockName("NetherEmeraldOre").setBlockTextureName("PotatoCraft:nether_emerald_ore");
+
+	public static Block NetherIronOre=new NetherIronOre(Material.rock)
+	.setBlockName("NetherIronOre").setBlockTextureName("PotatoCraft:nether_iron_ore");
+
+	public static Block NetherLapisOre=new NetherLapisOre(Material.rock)
+	.setBlockName("NetherLapisOre").setBlockTextureName("PotatoCraft:nether_lapis_ore");
+
+	public static Block NetherRedstoneOre=new NetherRedstoneOre(Material.rock)
+	.setBlockName("NetherRedstoneOre").setBlockTextureName("PotatoCraft:nether_redstone_ore");
+
+	//spells
+	public static Item LightningSpell=new LightningSpell()
+	.setUnlocalizedName("LightningSpell").setTextureName("PotatoCraft:lightning_spell");
+
+	public static Item AnvilRainSpell=new AnvilRainSpell()
+	.setUnlocalizedName("AnvilRainSpell").setTextureName("PotatoCraft:anvil_rain_spell");
+
+	//potatos
+	public static Item LifePotato=new LifePotato()
+	.setUnlocalizedName("LifePotato").setTextureName("PotatoCraft:life_potato");
+
+	public static Item DeathPotato=new DeathPotato()
+	.setUnlocalizedName("DeathPotato").setTextureName("PotatoCraft:death_potato");
+
+	public static Item AdamantinePotato=new AdamantinePotato()
+	.setUnlocalizedName("AdamantinePotato").setTextureName("PotatoCraft:adamantine_potato");
+
+	public static Item CorruptedPotato=new CorruptedPotato()
+	.setUnlocalizedName("CorruptedPotato").setTextureName("PotatoCraft:corrupted_potato");
+
+	public static Item HardenedPotato=new HardenedPotato()
+	.setUnlocalizedName("HardenedPotato").setTextureName("PotatoCraft:hardened_potato");
+
+	public static Item InversionPotato=new InversionPotato()
+	.setUnlocalizedName("InversionPotato").setTextureName("PotatoCraft:inversion_potato");
+
+	public static Item RockyPotato=new RockyPotato()
+	.setUnlocalizedName("RockyPotato").setTextureName("PotatoCraft:rocky_potato");
+
+	//misc items
+	public static Item CarbonRod=new CarbonRod()
+	.setUnlocalizedName("CarbonRod").setTextureName("PotatoCraft:carbon_rod");
+
+	public static Item AdamiteShard=new AdamiteShard()
+	.setUnlocalizedName("AdamiteShard").setTextureName("PotatoCraft:adamite_shard");
+
+	public static Item AdamiteChunk=new AdamiteChunk()
+	.setUnlocalizedName("AdamiteChunk").setTextureName("PotatoCraft:adamite_chunk");
+
+	public static Item InfernalCoal=new InfernalCoal()
+	.setUnlocalizedName("InfernalCoal").setTextureName("PotatoCraft:infernal_coal");
+
+	public static Item UnstableAdamiteChunk=new UnstableAdamiteChunk()
+	.setUnlocalizedName("UnstableAdamiteChunk").setTextureName("PotatoCraft:unstable_adamite_chunk");
+
+	public static Item AdamiteIngot=new AdamiteIngot()
+	.setUnlocalizedName("AdamiteIngot").setTextureName("PotatoCraft:adamite_ingot");
+
+	//electrics
+	public static Item GolemCpu=new GolemCpu()
+	.setUnlocalizedName("GolemCpu").setTextureName("PotatoCraft:golem_cpu");
+
+	//worldgen
+	public static AdamiteOreGen GenAdamiteOre=new AdamiteOreGen();
+	public static InfernalCoalGen GenInfernalCoal=new InfernalCoalGen();
+	public static CoalLumpGen GenCoalLump=new CoalLumpGen();
+
+	public static NetherDiamondOreGen GenNetherDiamondOre=new NetherDiamondOreGen();
+	public static NetherEmeraldOreGen GenNetherEmeraldOre=new NetherEmeraldOreGen();
+	public static NetherIronOreGen GenNetherIronOre=new NetherIronOreGen();
+	public static NetherGoldOreGen GenNetherGoldOre=new NetherGoldOreGen();
+	public static NetherLapisOreGen GenNetherLapisOre=new NetherLapisOreGen();
+	public static NetherRedstoneOreGen GenNetherRedstonOre=new NetherRedstoneOreGen();
+
+	@EventHandler
+	public void init(FMLInitializationEvent event) {
+		System.out.println("Loading mod registries...");
+
+		//GUI handler
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+
+		//Tile Entities
+		GameRegistry.registerTileEntity(TileEntityInfusion.class, "TileEntityInfusion");
+
+		//blocks
+		GameRegistry.registerBlock(PotatoCraft.PotatoBlock, "PotatoBlock"); //add potato block, the very first block/item added to PotatoCraft.
+		GameRegistry.registerBlock(PotatoCraft.CorruptedPotatoBlock, "CorruptedPotatoBlock");
+		GameRegistry.registerBlock(PotatoCraft.PotatoBricks, "PotatoBricks");
+		GameRegistry.registerBlock(PotatoCraft.AdamantinePotatoBlock, "AdamantinePotatoBlock");
+		GameRegistry.registerBlock(PotatoCraft.FieryPotatoBlock, "FieryPotatoBlock");
+		GameRegistry.registerBlock(PotatoCraft.InfernalCoalBlock, "InfernalCoalBlock");
+		GameRegistry.registerBlock(PotatoCraft.Concrete, "Concrete");
+		GameRegistry.registerBlock(PotatoCraft.ReinforcedConcrete, "ReinforcedConcrete");
+		GameRegistry.registerBlock(PotatoCraft.InfernalCrystal, "InfernalCrystal");
+		GameRegistry.registerBlock(PotatoCraft.InfusionTable, "InfusionTable");
+
+		//worldgen
+		GameRegistry.registerWorldGenerator(PotatoCraft.GenAdamiteOre, 1);
+		GameRegistry.registerWorldGenerator(PotatoCraft.GenInfernalCoal, 1);
+		GameRegistry.registerWorldGenerator(PotatoCraft.GenCoalLump, 1);
+
+		GameRegistry.registerWorldGenerator(PotatoCraft.GenNetherDiamondOre, 1);
+		GameRegistry.registerWorldGenerator(PotatoCraft.GenNetherEmeraldOre, 1);
+		GameRegistry.registerWorldGenerator(PotatoCraft.GenNetherIronOre, 1);
+		GameRegistry.registerWorldGenerator(PotatoCraft.GenNetherGoldOre, 1);
+		GameRegistry.registerWorldGenerator(PotatoCraft.GenNetherLapisOre, 1);
+		GameRegistry.registerWorldGenerator(PotatoCraft.GenNetherRedstonOre, 1);
+
+		//spells
+		GameRegistry.registerItem(PotatoCraft.LightningSpell, "LightningSpell");
+		GameRegistry.registerItem(PotatoCraft.AnvilRainSpell, "AnvilRainSpell");
+
+		//adamantine tools
+		GameRegistry.registerItem(PotatoCraft.AdamantinePickaxe, "AdamantinePickaxe");
+		GameRegistry.registerItem(PotatoCraft.AdamantineAxe, "AdamantineAxe");
+		GameRegistry.registerItem(PotatoCraft.AdamantineShovel, "AdamantineShovel");
+		GameRegistry.registerItem(PotatoCraft.AdamantineSword, "AdamantineSword");
+		GameRegistry.registerItem(PotatoCraft.AdamantineHoe, "AdamantineHoe");
+
+		//activated adamantine tools
+		GameRegistry.registerItem(PotatoCraft.ActiveAdamantinePickaxe, "ActiveAdamantinePickaxe");
+
+		//multitools
+		GameRegistry.registerItem(PotatoCraft.WoodenMultitool, "WoodenMultitool");
+		GameRegistry.registerItem(PotatoCraft.StoneMultitool, "StoneMultitool");
+		GameRegistry.registerItem(PotatoCraft.IronMultitool, "IronMultitool");
+		GameRegistry.registerItem(PotatoCraft.GoldMultitool, "GoldMultitool");
+		GameRegistry.registerItem(PotatoCraft.DiamondMultitool, "DiamondMultitool");
+		GameRegistry.registerItem(PotatoCraft.AdamantineMultitool, "AdamantineMultitool");
+		GameRegistry.registerItem(PotatoCraft.PotatoMultitool, "PotatoMultitool");
+
+		//electrics
+		GameRegistry.registerItem(PotatoCraft.GolemCpu, "GolemCpu");
+
+		//potato tools
+		GameRegistry.registerItem(PotatoCraft.PotatoPickaxe, "PotatoPickaxe");
+
+		//fuel handler
+		GameRegistry.registerFuelHandler(new FuelHandler());
+
+		//ores
+		GameRegistry.registerBlock(PotatoCraft.AdamiteOre, "AdamiteOre");
+		GameRegistry.registerBlock(PotatoCraft.InfernalCoalOre, "InfernalCoalOre");
+
+		GameRegistry.registerBlock(PotatoCraft.NetherDiamondOre, "NetherDiamondOre");
+		GameRegistry.registerBlock(PotatoCraft.NetherGoldOre, "NetherGoldOre");
+		GameRegistry.registerBlock(PotatoCraft.NetherEmeraldOre, "NetherEmeraldOre");
+		GameRegistry.registerBlock(PotatoCraft.NetherIronOre, "NetherIronOre");
+		GameRegistry.registerBlock(PotatoCraft.NetherLapisOre, "NetherLapisOre");
+		GameRegistry.registerBlock(PotatoCraft.NetherRedstoneOre, "NetherRedstoneOre");
+
+		//ender tools
+		GameRegistry.registerItem(PotatoCraft.EnderPickaxe, "EnderPickaxe");
+
+		//smelting recipes
+		GameRegistry.addSmelting(PotatoCraft.AdamiteOre, new ItemStack(PotatoCraft.AdamiteShard), 10.0F);
+
+		GameRegistry.addSmelting(PotatoCraft.NetherDiamondOre, new ItemStack(Items.diamond, 2), 10.0F);
+		GameRegistry.addSmelting(PotatoCraft.NetherEmeraldOre, new ItemStack(Items.emerald, 2), 10.0F);
+		GameRegistry.addSmelting(PotatoCraft.NetherIronOre, new ItemStack(Items.iron_ingot, 2), 10.0F);
+		GameRegistry.addSmelting(PotatoCraft.NetherGoldOre, new ItemStack(Items.gold_ingot, 2), 10.0F);
+		GameRegistry.addSmelting(PotatoCraft.NetherLapisOre, new ItemStack(Items.dye, 8, 4), 10.0F);
+		GameRegistry.addSmelting(PotatoCraft.NetherRedstoneOre, new ItemStack(Items.redstone, 8), 10.0F);
+		GameRegistry.addSmelting(PotatoCraft.UnstableAdamiteChunk, new ItemStack(PotatoCraft.AdamiteIngot, 1), 20F);
+
+		//potatos
+		GameRegistry.registerItem(PotatoCraft.AdamantinePotato, "AdamantinePotato");
+		GameRegistry.registerItem(PotatoCraft.CorruptedPotato, "CorruptedPotato");
+		GameRegistry.registerItem(PotatoCraft.LifePotato, "LifePotato");
+		GameRegistry.registerItem(PotatoCraft.DeathPotato, "DeathPotato");
+		GameRegistry.registerItem(PotatoCraft.HardenedPotato, "HardenedPotato");
+		GameRegistry.registerItem(PotatoCraft.InversionPotato, "InversionPotato");
+		GameRegistry.registerItem(PotatoCraft.RockyPotato, "RockyPotato");
+
+		//misc items
+		GameRegistry.registerItem(PotatoCraft.CarbonRod, "CarbonRod");
+		GameRegistry.registerItem(PotatoCraft.AdamiteShard, "AdamiteShard");
+		GameRegistry.registerItem(PotatoCraft.AdamiteChunk, "AdamiteChunk");
+		GameRegistry.registerItem(PotatoCraft.InfernalCoal, "InfernalCoal");
+		GameRegistry.registerItem(PotatoCraft.UnstableAdamiteChunk, "UnstableAdamiteChunk");
+		GameRegistry.registerItem(PotatoCraft.AdamiteIngot, "AdamiteIngot");
+
+		//shapeless recipes
+		GameRegistry.addShapelessRecipe(new ItemStack(Item.getItemById(392), 9), PotatoCraft.PotatoBlock);
+		GameRegistry.addShapelessRecipe(new ItemStack(PotatoCraft.CorruptedPotato, 9), PotatoCraft.CorruptedPotatoBlock);
+		GameRegistry.addShapelessRecipe(new ItemStack(PotatoCraft.AdamantinePotato, 9), PotatoCraft.AdamantinePotatoBlock);
+		GameRegistry.addShapelessRecipe(new ItemStack(PotatoCraft.InfernalCoal, 9), PotatoCraft.InfernalCoalBlock);
+
+		//misc recipes
+		GameRegistry.addRecipe(new ItemStack(PotatoCraft.CarbonRod, 4), new Object[]
+				{"X", "X", 'X', new ItemStack(Items.coal, 1, 1)});
+
+		GameRegistry.addRecipe(new ItemStack(PotatoCraft.AdamiteChunk, 1), new Object[]
+				{"XXX", "XXX", "XXX", 'X', PotatoCraft.AdamiteShard});
+
+		GameRegistry.addRecipe(new ItemStack(PotatoCraft.UnstableAdamiteChunk, 1), new Object[]
+				{"CCC", "CAC", "CCC", 'C', PotatoCraft.InfernalCoal, 'A', PotatoCraft.AdamiteChunk});
+
+		//potato blocks
+		GameRegistry.addRecipe(new ItemStack(PotatoCraft.PotatoBlock, 1), new Object[]
+				{"XXX", "XXX", "XXX", 'X', Items.potato});
+
+		GameRegistry.addRecipe(new ItemStack(PotatoCraft.CorruptedPotatoBlock, 1), new Object[]
+				{"XXX", "XXX", "XXX", 'X', PotatoCraft.CorruptedPotato});
+
+		GameRegistry.addRecipe(new ItemStack(PotatoCraft.PotatoBricks, 4), new Object[]
+				{"XX ", "XX ", 'X', PotatoCraft.PotatoBlock});
+
+		GameRegistry.addRecipe(new ItemStack(PotatoCraft.AdamantinePotatoBlock, 1), new Object[]
+				{"XXX", "XXX", "XXX", 'X', PotatoCraft.AdamantinePotato});
+
+		//blocks
+		GameRegistry.addRecipe(new ItemStack(PotatoCraft.InfernalCoalBlock, 1), new Object[]
+				{"XXX", "XXX", "XXX", 'X', PotatoCraft.InfernalCoal});
+
+		//chain armor
+		GameRegistry.addRecipe(new ItemStack(Items.chainmail_helmet, 1), new Object[]
+				{"BBB", "B B", 'B', Blocks.iron_bars});
+
+		GameRegistry.addRecipe(new ItemStack(Items.chainmail_chestplate, 1), new Object[]
+				{"B B", "BBB", "BBB", 'B', Blocks.iron_bars});
+
+		GameRegistry.addRecipe(new ItemStack(Items.chainmail_leggings, 1), new Object[]
+				{"BBB", "B B", "B B", 'B', Blocks.iron_bars});
+
+		GameRegistry.addRecipe(new ItemStack(Items.chainmail_boots, 1), new Object[]
+				{"B B", "B B", 'B', Blocks.iron_bars});
+
+		//survival spawn eggs
+		GameRegistry.addRecipe(new ItemStack(Items.spawn_egg, 1, 54), new Object[]
+				{"RRR", "RDR", "RER", 'R', Items.rotten_flesh, 'D', PotatoCraft.DeathPotato, 'E', Items.egg});
+
+		GameRegistry.addRecipe(new ItemStack(Items.spawn_egg, 1, 51), new Object[]
+				{"BBB", "BDB", "BEB", 'B', Items.bone, 'D', PotatoCraft.DeathPotato, 'E', Items.egg});
+
+		GameRegistry.addRecipe(new ItemStack(Items.spawn_egg, 1, 50), new Object[]
+				{"BBB", "BLB", "BEB", 'B', Items.gunpowder, 'L', PotatoCraft.LifePotato, 'E', Items.egg});
+
+		GameRegistry.addRecipe(new ItemStack(Items.spawn_egg, 1, 52), new Object[]
+				{"BBB", "BLB", "BEB", 'B', Items.string, 'D', PotatoCraft.LifePotato, 'E', Items.egg});
+
+		GameRegistry.addRecipe(new ItemStack(Items.spawn_egg, 1, 59), new Object[]
+				{"EBE", "BLB", "BAB", 'B', Items.string, 'E', Items.spider_eye, 'L', PotatoCraft.LifePotato, 'A', Items.egg});
+
+		System.out.println("Done loading mod registries");
+	}
+	
+	@EventHandler
+	public void load(FMLInitializationEvent event) {
+		PotatoCraft.proxy.registerRenderInformation();
+
+		System.out.println("Loading mod names...");
+
+		//blocks
+		LanguageRegistry.addName(PotatoCraft.PotatoBlock, "Potato Block");
+		LanguageRegistry.addName(PotatoCraft.CorruptedPotatoBlock, "Corrupted Potato Block");
+		LanguageRegistry.addName(PotatoCraft.PotatoBricks, "Potato Bricks");
+		LanguageRegistry.addName(PotatoCraft.AdamantinePotatoBlock, "Adamantine Potato Block");
+		LanguageRegistry.addName(PotatoCraft.FieryPotatoBlock, "Fiery Potato Block");
+		LanguageRegistry.addName(PotatoCraft.InfernalCoalBlock, "Infernal Coal Block");
+		LanguageRegistry.addName(PotatoCraft.Concrete, "Concrete");
+		LanguageRegistry.addName(PotatoCraft.ReinforcedConcrete, "Reinforced Concrete");
+		LanguageRegistry.addName(PotatoCraft.InfernalCrystal, "Infernal Crystal");
+		LanguageRegistry.addName(PotatoCraft.InfusionTable, "Infusion Table");
+
+		//ores
+		LanguageRegistry.addName(PotatoCraft.AdamiteOre, "Adamite Ore");
+		LanguageRegistry.addName(PotatoCraft.InfernalCoalOre, "Infernal Coal");
+
+		LanguageRegistry.addName(PotatoCraft.NetherDiamondOre, "Nether Diamond Ore");
+		LanguageRegistry.addName(PotatoCraft.NetherGoldOre, "Nether Gold Ore");
+		LanguageRegistry.addName(PotatoCraft.NetherEmeraldOre, "Nether Emerald Ore");
+		LanguageRegistry.addName(PotatoCraft.NetherIronOre, "Nether Iron Ore");
+		LanguageRegistry.addName(PotatoCraft.NetherLapisOre, "Nether Lapis Ore");
+		LanguageRegistry.addName(PotatoCraft.NetherRedstoneOre, "Nether Redstone Ore");
+
+		//ender tools
+		LanguageRegistry.addName(PotatoCraft.EnderPickaxe, "Ender Pickaxe");
+
+		//spells
+		LanguageRegistry.addName(PotatoCraft.LightningSpell, "Lightning Spell");
+		LanguageRegistry.addName(PotatoCraft.AnvilRainSpell, "Anvil Rain");
+
+		//potatos
+		LanguageRegistry.addName(PotatoCraft.AdamantinePotato, "Adamantine Potato");
+		LanguageRegistry.addName(PotatoCraft.CorruptedPotato, "Corrupted Potato");
+		LanguageRegistry.addName(PotatoCraft.LifePotato, "Life Potato");
+		LanguageRegistry.addName(PotatoCraft.DeathPotato, "Death Potato");
+		LanguageRegistry.addName(PotatoCraft.HardenedPotato, "Hardened Potato");
+		LanguageRegistry.addName(PotatoCraft.InversionPotato, "Inversion Potato");
+		LanguageRegistry.addName(PotatoCraft.RockyPotato, "Rocky Potato");
+
+		//misc items
+		LanguageRegistry.addName(PotatoCraft.CarbonRod, "Carbon Rod");
+		LanguageRegistry.addName(PotatoCraft.AdamiteShard, "Adamite Shard");
+		LanguageRegistry.addName(PotatoCraft.AdamiteChunk, "Adamite Chunk");
+		LanguageRegistry.addName(PotatoCraft.InfernalCoal, "Infernal Coal");
+		LanguageRegistry.addName(PotatoCraft.UnstableAdamiteChunk, "Unstable Adamite Chunk");
+
+		//adamantine tools
+		LanguageRegistry.addName(PotatoCraft.AdamantinePickaxe, "Adamantine Pickaxe");
+		LanguageRegistry.addName(PotatoCraft.AdamantineAxe, "Adamantine Axe");
+		LanguageRegistry.addName(PotatoCraft.AdamantineShovel, "Adamantine Shovel");
+		LanguageRegistry.addName(PotatoCraft.AdamantineSword, "Adamantine Sword");
+		LanguageRegistry.addName(PotatoCraft.AdamantineHoe, "Adamantine Hoe");
+
+		//activated adamantine tools
+		LanguageRegistry.addName(PotatoCraft.ActiveAdamantinePickaxe, "Adamantine Pickaxe");
+
+		//multitools
+		LanguageRegistry.addName(PotatoCraft.WoodenMultitool, "Wooden Utility Knife");
+		LanguageRegistry.addName(PotatoCraft.StoneMultitool, "Stone Utility Knife");
+		LanguageRegistry.addName(PotatoCraft.IronMultitool, "Iron Utility Knife");
+		LanguageRegistry.addName(PotatoCraft.GoldMultitool, "Gold Utility Knife");
+		LanguageRegistry.addName(PotatoCraft.DiamondMultitool, "Diamond Utility Knife");
+		LanguageRegistry.addName(PotatoCraft.AdamantineMultitool, "Adamantine Utility Knife");
+		LanguageRegistry.addName(PotatoCraft.PotatoMultitool, "Potato Multitool");
+
+		//electrics
+		LanguageRegistry.addName(PotatoCraft.GolemCpu, "Golem CPU");
+
+		//potato tools
+		LanguageRegistry.addName(PotatoCraft.PotatoPickaxe, "Potato Pickaxe");
+
+		System.out.println("Done loading mod names");
+	}
+}

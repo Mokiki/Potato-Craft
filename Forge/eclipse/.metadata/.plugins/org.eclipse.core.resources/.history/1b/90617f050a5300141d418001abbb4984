@@ -1,0 +1,11 @@
+package com.russn.pc.item;
+
+import net.minecraft.item.Item;
+
+import com.russn.pc.common.ModRegistry;
+
+public class UnstableAdamiteChunk extends Item {
+	public UnstableAdamiteChunk() {
+		this.setCreativeTab(ModRegistry.TabMat);
+	}
+}

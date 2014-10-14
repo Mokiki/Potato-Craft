@@ -1,0 +1,31 @@
+package com.russn.pc.block;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+
+import com.russn.pc.common.PotatoCraft;
+import com.russn.pc.gui.GuiInfusion;
+import com.russn.pc.tileentity.TileEntityInfusion;
+
+public class InfusionTable extends Block {
+	public InfusionTable(Material mat) { 
+		super(mat);
+        this.setCreativeTab(PotatoCraft.tabMisc);
+        this.setHardness(7);
+        this.setHarvestLevel("pickaxe", 3);
+	}
+	
+	@Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
+		player.openGui(PotatoCraft.instance, GuiInfusion.ID, world, x, y, z);
+		return true;
+    }
+	
+	@Override
+    public TileEntity createTileEntity(World world, int metadata) {
+        return new TileEntityInfusion();
+    }
+}
